@@ -13,7 +13,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->singleton('hubspot', function(){
+            return new \App\Components\Hubspot();
+        });
     }
 
     /**
