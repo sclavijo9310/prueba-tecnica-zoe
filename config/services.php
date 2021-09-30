@@ -31,7 +31,8 @@ return [
     ],
 
     'hubspot' => [
-        'key' => env('HUBSPOT_APIKEY')
+        'key' => env('HUBSPOT_APIKEY'),
+        'host' => env('HUBSPOT_APIHOST', 'https://api.hubapi.com')
     ]
 
 ];

@@ -4,6 +4,7 @@
 namespace App\Components;
 
 
+use App\Exceptions\HubspotException;
 use GuzzleHttp\Client;
 
 class Hubspot
@@ -12,9 +13,16 @@ class Hubspot
     {
         $client = new Client();
 
-        $response = $client->get('https://api.hubapi.com/contacts/v1/lists/all/contacts/all?hapikey=' . config('services.hubspot.key'));
-        $data = json_decode($response->getBody()->getContents());
+        try {
+            $response = $client->get($this->resolveContactsUrl());
+            return json_decode($response->getBody()->getContents());
+        } catch (\Exception $ex) {
+            throw new HubspotException($ex->getMessage());
+        }
+    }
 
-        return $data->contacts;
+    private function resolveContactsUrl()
+    {
+        return config('services.hubspot.host') . '/contacts/v1/lists/all/contacts/all?hapikey=' . config('services.hubspot.key');
     }
 }
