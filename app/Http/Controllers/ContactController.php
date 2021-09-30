@@ -26,6 +26,9 @@ class ContactController extends Controller
                             break;
                         }
                     }
+                    if (!is_null($email)) {
+                        break;
+                    }
                 }
 
                 Contact::create([
@@ -45,7 +48,7 @@ class ContactController extends Controller
         $query = Contact::query();
         $email = $request->get('email');
         if (!empty($email)) {
-            $query->where('email', 'like', '%' . $email . '%');
+            $query->whereRaw('email like ?', ['%' . $email . '%']);
         }
 
         return ContactResource::collection($query->get());
